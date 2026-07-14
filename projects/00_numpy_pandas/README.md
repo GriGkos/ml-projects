@@ -1,10 +1,10 @@
-# Project 01: NumPy and Pandas
+# Project 00: NumPy and Pandas
 
-Первый учебный проект по базовой практике с `pandas` и `NumPy`.
+Вводный учебный проект по базовой практике с `pandas` и `NumPy`.
 
 ## Состав работы
 
-- [01_numpy_pandas.ipynb](./01_numpy_pandas.ipynb)
+- [00_numpy_pandas.ipynb](./00_numpy_pandas.ipynb)
 - `data/credit_data.xlsx`
 
 ## Что сделано в ноутбуке
@@ -24,4 +24,4 @@
 
 ## Как открыть
 
-Открой ноутбук `01_numpy_pandas.ipynb` в Jupyter Notebook или VS Code и выполни ячейки сверху вниз.
+Открой ноутбук `00_numpy_pandas.ipynb` в Jupyter Notebook или VS Code и выполни ячейки сверху вниз.
