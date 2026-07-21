@@ -21,12 +21,18 @@ projects/
   01_ml_bricks/
     01_ml_bricks.ipynb
     README.md
+  02_ml_basics/
+    research.ipynb
+    README.md
+    data/
+    docs/
 ```
 
 ## Текущие проекты
 
 - `00_numpy_pandas` - базовая практика по `NumPy` и `pandas`
 - `01_ml_bricks` - тренировка базовых кирпичиков ML-пайплайна
+- `02_ml_basics` - первое обязательное задание: EDA, модели, метрики, гипотезы
 
 ## Рекомендуемый workflow
 
