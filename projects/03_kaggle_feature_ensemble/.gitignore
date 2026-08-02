@@ -1,0 +1,7 @@
+# Kaggle data can be large and is downloaded locally.
+data/*
+!data/.gitkeep
+!data/README.md
+
+# Keep notebook checkpoints out of the project branch.
+notebooks/.ipynb_checkpoints/
