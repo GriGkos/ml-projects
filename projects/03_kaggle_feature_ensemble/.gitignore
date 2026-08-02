@@ -5,3 +5,7 @@ data/*
 
 # Keep notebook checkpoints out of the project branch.
 notebooks/.ipynb_checkpoints/
+
+# Cached feature matrices and model outputs are rebuilt locally.
+artifacts/*
+!artifacts/.gitkeep
