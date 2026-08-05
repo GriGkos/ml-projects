@@ -1,9 +1,7 @@
-# Подтверждение результата на Kaggle
+# Результат Kaggle
 
-В файле `kaggle_submission.png` находится скриншот отправки `submission_final.csv` на Kaggle.
-На нём видны полученные значения private RMSE `3.61471` и public RMSE `3.70359`.
+`kaggle_submission.png` подтверждает результат файла `submission_xgboost_seed_bagging.csv`:
 
-Скриншот является внешним подтверждением результата и не создаётся ноутбуком. Локально
-ноутбук формирует файл для загрузки: `../submissions/submission_final.csv`.
-
-Скриншот сохранён вместе с итоговым сабмитом как подтверждение результата соревнования.
+- public RMSE: `3.69682`;
+- private RMSE: `3.61029`;
+- private leaderboard: 132-е место из 4 111, топ 3.21%.
