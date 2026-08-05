@@ -1,73 +1,73 @@
 # Elo Merchant Category Recommendation
 
-End-to-end regression project for the Kaggle competition [Elo Merchant Category Recommendation](https://www.kaggle.com/competitions/elo-merchant-category-recommendation).
+Полный регрессионный проект для соревнования Kaggle [Elo Merchant Category Recommendation](https://www.kaggle.com/competitions/elo-merchant-category-recommendation).
 
-## Goal
+## Цель
 
-Predict the `target` loyalty score from card attributes and two transaction tables. The competition metric is RMSE, so lower is better.
+Предсказать показатель лояльности `target` по атрибутам карт и двум таблицам транзакций. Метрика соревнования - RMSE: чем она меньше, тем лучше.
 
-## Validation and result
+## Валидация и результат
 
-Validation uses `StratifiedKFold(n_splits=5, shuffle=True, random_state=42)` by the indicator `target < -30`: each validation fold contains 441-442 extreme objects. All model selection and ensemble weights are based on out-of-fold predictions. The final LightGBM configuration is additionally checked on an independent split with `random_state=2026`.
+Для валидации используется `StratifiedKFold(n_splits=5, shuffle=True, random_state=42)` по индикатору `target < -30`: в каждом фолде валидации содержится 441-442 экстремальных объекта. Выбор моделей и весов ансамбля выполняется только по out-of-fold предсказаниям. Лучшая конфигурация LightGBM дополнительно проверена на независимом разбиении с `random_state=2026`.
 
-| Experiment | OOF RMSE |
+| Эксперимент | OOF RMSE |
 | --- | ---: |
 | DummyRegressor | 3.85050 |
-| Ridge on raw card features | 3.84454 |
-| LightGBM with Optuna tuning | 3.65100 |
-| CatBoost with native categorical features | 3.65271 |
-| XGBoost, three-seed bagging | 3.65008 |
-| XGBoost with cross-fitted target encodings | 3.65171 |
-| Weighted OOF blend | 3.64705 |
-| **Stacked blend with cross-fitted extreme-regime adjustment** | **3.64665** |
+| Ridge на исходных признаках карт | 3.84454 |
+| LightGBM с подбором Optuna | 3.65100 |
+| CatBoost с нативными категориальными признаками | 3.65271 |
+| XGBoost с bagging по трём seed | 3.65008 |
+| XGBoost с target encoding без утечки | 3.65171 |
+| Взвешенный OOF-ансамбль | 3.64705 |
+| **Стэкинг с кросс-фитинговой корректировкой экстремального режима** | **3.64665** |
 
-The final blend uses LightGBM, CatBoost, a three-seed XGBoost bag, and XGBoost trained on the expanded feature set. The target-encoding component is retained as a documented negative experiment: in the current OOF optimization its weight is zero. A regularized second-level Ridge model uses cross-fitted OOF predictions. The extreme `target < -30` regime is handled by a separate classifier; its threshold, replacement value and continuous correction are selected inside the other folds.
+Финальный ансамбль объединяет LightGBM, CatBoost, XGBoost с bagging по трём seed и XGBoost на расширенном наборе признаков. Компонент с target encoding оставлен как документированный отрицательный эксперимент: при текущей оптимизации OOF его вес равен нулю. Регуляризованная модель второго уровня Ridge использует кросс-фитинговые OOF-предсказания. Для экстремального режима `target < -30` обучается отдельный классификатор; его порог, заменяющее значение и непрерывная поправка подбираются внутри остальных фолдов.
 
-The uploaded `submission_final.csv` received private RMSE **3.61471** and public RMSE **3.70359**. In the downloaded private leaderboard this corresponds to approximately rank 787 of 4,111 (top 19.1%). The top-10% private threshold is 3.61369, so the remaining gap is 0.00102.
+Загруженный `submission_final.csv` получил private RMSE **3.61471** и public RMSE **3.70359**. В скачанном private leaderboard это примерно 787-е место из 4 111, то есть топ 19.1%. Граница топ-10% по private score равна 3.61369, поэтому до неё не хватило 0.00102.
 
-## Main findings
+## Основные выводы
 
-- The target has an unusual spike near `-33.22`: 2,207 train objects (1.09%) belong to this extreme regime.
-- Transaction aggregates are more useful than the three raw card features: compact LightGBM ablation improves from `3.84196` to `3.65499` RMSE.
-- More features did not improve the compact LightGBM ablation (`v1 3.65499`, `v2 3.65506`), but expanded XGBoost receives a non-zero OOF-selected blend weight.
-- Models have highly correlated residuals, so the ensemble improvement is modest and is reported conservatively through OOF RMSE.
+- В целевой переменной есть необычный пик около `-33.22`: 2 207 объектов train (1.09%) относятся к экстремальному режиму.
+- Агрегаты транзакций полезнее трёх исходных признаков карт: в компактном эксперименте LightGBM RMSE улучшилась с `3.84196` до `3.65499`.
+- Расширение признакового пространства не улучшило компактный эксперимент LightGBM (`v1 3.65499`, `v2 3.65506`), но расширенный XGBoost получил ненулевой вес, выбранный по OOF.
+- Ошибки моделей сильно коррелируют, поэтому прирост от ансамбля небольшой; он консервативно оценивается по OOF RMSE.
 
-## Rejected hypotheses
+## Неподтверждённые гипотезы
 
-- The expanded v2 feature set does not improve the compact LightGBM ablation by itself (`3.65506` versus `3.65499`), so its use is justified only by the blend's OOF weights.
-- Cross-fitted target encoding does not improve the matched XGBoost model and receives an OOF weight of zero.
-- Outlier correction reduces RMSE on `target < -30`, but slightly worsens it on the remaining cards; the final correction is deliberately conservative and selected inside folds.
+- Расширенный набор признаков v2 сам по себе не улучшил компактный эксперимент LightGBM (`3.65506` против `3.65499`); его использование обосновано только весами OOF-ансамбля.
+- Target encoding без утечки не улучшил сопоставимую модель XGBoost и получил нулевой вес в ансамбле по OOF.
+- Коррекция выбросов снижает RMSE на объектах с `target < -30`, но немного ухудшает её на остальных картах; итоговая корректировка намеренно сделана консервативной и подбирается внутри фолдов.
 
-## References and authorship
+## Источники и авторство
 
-- [Competition overview](https://www.kaggle.com/competitions/elo-merchant-category-recommendation) and the [public code collection](https://www.kaggle.com/competitions/elo-merchant-category-recommendation/code) were used to understand the data format and common validation pitfalls.
-- The implementation, feature aggregation, cross-fitted target encoding, validation, blending and report are written in this repository. Public solutions were not copied.
+- [Страница соревнования](https://www.kaggle.com/competitions/elo-merchant-category-recommendation) и [коллекция публичного кода](https://www.kaggle.com/competitions/elo-merchant-category-recommendation/code) использовались, чтобы разобраться в формате данных и типичных ошибках валидации.
+- Реализация, агрегация признаков, target encoding без утечки, валидация, ансамблирование и отчёт написаны в этом репозитории. Публичные решения не копировались.
 
-## Project layout
+## Структура проекта
 
 ```text
 03_kaggle_feature_ensemble/
   notebooks/solution.ipynb
   submissions/submission_final.csv
-  reports/kaggle_submission.png  # Kaggle submission evidence
+  reports/kaggle_submission.png  # подтверждение отправки на Kaggle
 ```
 
-The repository intentionally contains no raw data, caches, alternate submissions, or helper scripts: `solution.ipynb` is self-contained and includes the feature engineering and training code.
+В репозитории намеренно нет исходных данных, кэшей, альтернативных сабмитов и вспомогательных скриптов: `solution.ipynb` самодостаточен и содержит код построения признаков и обучения моделей.
 
-## Reproduction
+## Воспроизведение
 
-1. Download the competition data and place all CSV files in a local `data/` directory next to the notebook. The directory is ignored by Git.
-2. Install dependencies:
+1. Скачайте данные соревнования и поместите все CSV-файлы в локальную папку `data/` рядом с проектом. Эта папка игнорируется Git.
+2. Установите зависимости:
 
 ```powershell
 cd projects/03_kaggle_feature_ensemble
 pip install -r requirements.txt
 ```
 
-3. Open and run `notebooks/solution.ipynb` from top to bottom. The complete feature code, model fitting, Optuna search, OOF blending and submission creation are inside the notebook.
-4. The first feature build and random-card EDA sample read the large transaction files; expect roughly 45-60 minutes on this computer and at least 8 GB RAM. Subsequent runs use local caches in `artifacts/`.
-5. Upload `submissions/submission_final.csv` to Kaggle and save the resulting screenshot with username and score in `reports/`.
+3. Откройте и запустите `notebooks/solution.ipynb` сверху вниз. Внутри находятся полный код построения признаков, обучение моделей, поиск Optuna, OOF-ансамблирование и создание сабмита.
+4. При первом построении признаков и при создании EDA-выборки читаются большие таблицы транзакций: на этом компьютере расчёт занимает примерно 45-60 минут и требует не менее 8 ГБ RAM. Повторные запуски используют локальные кэши из `artifacts/`.
+5. Загрузите `submissions/submission_final.csv` на Kaggle. Если результат изменился, обновите скриншот в `reports/kaggle_submission.png`.
 
-`reports/README.md` specifies the expected screenshot name and contents.
+В `reports/README.md` описано, что именно подтверждает скриншот.
 
-`data/` and `artifacts/` are intentionally excluded from Git because they contain source files and large generated outputs.
+Папки `data/` и `artifacts/` намеренно исключены из Git: в них находятся исходные файлы и большие сгенерированные результаты.
