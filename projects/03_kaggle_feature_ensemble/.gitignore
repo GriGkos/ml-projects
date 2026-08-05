@@ -1,11 +1,18 @@
-# Kaggle data can be large and is downloaded locally.
-data/*
-!data/.gitkeep
-!data/README.md
+# Local Kaggle data and all generated caches are never part of the submission.
+data/
+artifacts/
 
-# Keep notebook checkpoints out of the project branch.
+# The notebook contains the full executable pipeline. These local helpers are
+# kept only for development and must not be published with the project.
+src/
+docs/
+
+# Only the final Kaggle file belongs in the repository.
+submissions/candidates/
+submissions/submission_v*.csv
+
+# Notebook/Jupyter runtime files.
 notebooks/.ipynb_checkpoints/
-
-# Cached feature matrices and model outputs are rebuilt locally.
-artifacts/*
-!artifacts/.gitkeep
+**/__pycache__/
+*.pyc
+tmp_*.py

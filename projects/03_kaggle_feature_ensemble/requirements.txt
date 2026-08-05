@@ -1,5 +1,10 @@
--r ../../requirements.txt
 catboost
+jupyter
 lightgbm
+matplotlib
+numpy
 optuna
+pandas
+scikit-learn
+seaborn
 xgboost
