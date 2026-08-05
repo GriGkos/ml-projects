@@ -1,17 +1,17 @@
-# Local Kaggle data and all generated caches are never part of the submission.
+# Локальные данные Kaggle и сгенерированные кэши не входят в репозиторий.
 data/
 artifacts/
 
-# The notebook contains the full executable pipeline. These local helpers are
-# kept only for development and must not be published with the project.
+# Ноутбук содержит полный воспроизводимый пайплайн. Эти вспомогательные файлы
+# используются только при разработке и не публикуются вместе с проектом.
 src/
 docs/
 
-# Only the final Kaggle file belongs in the repository.
+# В репозитории хранится только итоговый файл для Kaggle.
 submissions/candidates/
 submissions/submission_v*.csv
 
-# Notebook/Jupyter runtime files.
+# Служебные файлы Jupyter.
 notebooks/.ipynb_checkpoints/
 **/__pycache__/
 *.pyc
