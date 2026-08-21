@@ -21,6 +21,7 @@
 |-- notebooks/home_credit_scoring.ipynb
 |-- scripts/run_full_gpu.ps1         # воспроизводимый полный GPU-запуск
 |-- scripts/validate_full_matrix.py  # проверка полной матрицы без обучения
+|-- scripts/build_final_report.py    # PDF 3-8 страниц из фактических OOF-результатов
 |-- reports/figures/              # графики, созданные ноутбуком
 |-- submissions/                  # финальный CSV для Kaggle
 |-- README.md
@@ -64,6 +65,7 @@ cd projects/04_home_credit_scoring
 ```
 
 Скрипт сознательно остановится, если CUDA недоступна: финальный режим не должен незаметно превратиться в многодневное CPU-обучение.
+После успешного запуска он создаст `reports/home_credit_final_report.pdf` из фактических OOF-метрик и графиков, а не из шаблонных чисел.
 
 Перед дорогим запуском можно отдельно проверить сборку всех признаков (команда требует примерно столько же RAM, сколько сам notebook, но не обучает модели):
 
