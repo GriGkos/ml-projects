@@ -51,6 +51,14 @@ jupyter lab notebooks/home_credit_scoring.ipynb
 
 Полный эксперимент с Optuna, 5-fold LightGBM/CatBoost и 5-fold MLP рекомендуется выполнять на машине с 16+ ГБ RAM; CUDA заметно ускоряет CatBoost и MLP. Никакие промежуточные признаки, модели или кэши при этом не записываются на диск.
 
+### Запуск на Kaggle
+
+1. Загрузите `notebooks/home_credit_scoring.ipynb` в Kaggle Notebooks.
+2. В панели **Input** добавьте **Home Credit Default Risk** как Competition Data.
+3. В **Settings** включите GPU и запустите **Run All**.
+
+Ноутбук автоматически обнаружит CSV в `/kaggle/input`, включит полный эксперимент и сохранит submission, графики и `final_results.json` в `/kaggle/working/home_credit_scoring`. Локальные пути `data/raw/` при этом продолжают работать без изменений.
+
 ### Финальный запуск на GPU
 
 1. Откройте PowerShell в `projects/04_home_credit_scoring` и оставьте `FAST_MODE=False` (это режим по умолчанию).
