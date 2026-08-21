@@ -171,6 +171,17 @@ def build(payload: dict, output: Path, figures: Path) -> None:
     story.append(paragraph(
         'Качество сравнивается по out-of-fold прогнозам, поэтому каждое наблюдение оценено моделью, которая не видела его label. '
         'Вес blend выбирался исключительно по OOF ROC-AUC, а не по public leaderboard.', styles['BodyText']))
+    ablation = payload.get('ablation', [])
+    if ablation:
+        story.append(Spacer(1, 0.2 * cm))
+        story.append(paragraph('<b>Ablation study.</b> LightGBM повторно обучается на тех же CV-фолдах после исключения целых групп источников.', styles['BodyText']))
+        ablation_rows = [['Вариант', 'Признаков', 'ROC-AUC', 'Δ ROC-AUC']]
+        for row in ablation:
+            ablation_rows.append([
+                str(row['variant']), str(row['n_features']), fmt(row.get('roc_auc')),
+                f"{row.get('delta_roc_auc', 0):+.5f}",
+            ])
+        story.append(make_table(ablation_rows, [6.0 * cm, 3.0 * cm, 3.5 * cm, 3.5 * cm]))
     story.append(image_or_note(figures / '06_mlp_learning_curves.png', 'Кривые обучения MLP не найдены.', width, styles))
     story.append(PageBreak())
 
@@ -184,6 +195,17 @@ def build(payload: dict, output: Path, figures: Path) -> None:
         for row in fairness[:10]:
             fair_rows.append([row['dimension'], str(row['group']), str(row['n']), fmt(row.get('roc_auc')), fmt(row.get('brier'))])
         story.append(make_table(fair_rows, [3.1 * cm, 3.0 * cm, 2.2 * cm, 3.5 * cm, 3.5 * cm]))
+    error_analysis = payload.get('error_analysis', [])
+    if error_analysis:
+        story.append(Spacer(1, 0.2 * cm))
+        story.append(paragraph('<b>Error analysis.</b> Профили ошибок рассчитаны только по OOF-прогнозам при выбранном пороге.', styles['BodyText']))
+        error_rows = [['Тип ошибки', 'n', 'Доля', 'Вероятность', 'Default rate']]
+        for row in error_analysis:
+            error_rows.append([
+                str(row['error_type']), str(row['count']), f"{row.get('share', 0):.2%}",
+                fmt(row.get('mean_probability')), f"{row.get('default_rate', 0):.2%}",
+            ])
+        story.append(make_table(error_rows, [3.4 * cm, 2.0 * cm, 2.5 * cm, 3.6 * cm, 3.8 * cm]))
     story.append(Spacer(1, 0.2 * cm))
     story.append(paragraph(
         f"<b>Итог.</b> Для submission использован OOF-blend с ROC-AUC {fmt(best.get('roc_auc'))}. "
