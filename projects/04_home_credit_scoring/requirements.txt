@@ -1,0 +1,10 @@
+catboost
+jupyter
+matplotlib
+numpy
+optuna
+pandas
+scikit-learn
+seaborn
+shap
+torch

@@ -1,0 +1,8 @@
+# Исходные данные соревнования Kaggle не хранятся в репозитории.
+data/raw/*
+!data/raw/.gitkeep
+
+# Артефакты локального запуска.
+data/processed/
+models/
+__pycache__/
