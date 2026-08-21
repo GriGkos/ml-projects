@@ -1,6 +1,8 @@
 catboost
+ipykernel
 jupyter
 matplotlib
+nbclient
 numpy
 optuna
 pandas
