@@ -1,6 +1,7 @@
 catboost
 ipykernel
 jupyter
+lightgbm
 matplotlib
 nbclient
 numpy
