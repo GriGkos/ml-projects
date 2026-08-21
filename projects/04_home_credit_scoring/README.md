@@ -20,6 +20,7 @@
 |-- data/raw/                     # исходные CSV Kaggle (в .gitignore)
 |-- notebooks/home_credit_scoring.ipynb
 |-- scripts/run_full_gpu.ps1         # воспроизводимый полный GPU-запуск
+|-- scripts/validate_full_matrix.py  # проверка полной матрицы без обучения
 |-- reports/figures/              # графики, созданные ноутбуком
 |-- submissions/                  # финальный CSV для Kaggle
 |-- README.md
@@ -63,6 +64,12 @@ cd projects/04_home_credit_scoring
 ```
 
 Скрипт сознательно остановится, если CUDA недоступна: финальный режим не должен незаметно превратиться в многодневное CPU-обучение.
+
+Перед дорогим запуском можно отдельно проверить сборку всех признаков (команда требует примерно столько же RAM, сколько сам notebook, но не обучает модели):
+
+```powershell
+python scripts/validate_full_matrix.py
+```
 
 Финальная ячейка сама запускает 40 trials Optuna, 5-fold LightGBM, CatBoost и MLP, подбирает веса исключительно по OOF, создаёт `submissions/submission_oof_blend.csv`, а также строит SHAP и fairness-диагностику. Не нужно вручную раскомментировать отдельные фрагменты кода.
 
