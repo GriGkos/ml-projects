@@ -6,3 +6,6 @@ data/raw/*
 data/processed/
 models/
 __pycache__/
+
+# Локальная выгрузка leaderboard не является частью решения.
+private_leaderboard.csv
