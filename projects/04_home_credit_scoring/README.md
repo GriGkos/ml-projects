@@ -1,6 +1,6 @@
 # Кредитный скоринг: Home Credit Default Risk
 
-Учебный ML-проект по данным соревнования [Home Credit Default Risk](https://www.kaggle.com/competitions/home-credit-default-risk/overview).
+ML-проект по данным соревнования [Home Credit Default Risk](https://www.kaggle.com/competitions/home-credit-default-risk/overview).
 
 Задача проекта — предсказать вероятность того, что у клиента возникнут проблемы с погашением кредита, и отдельно проверить, насколько подробная кредитная и платёжная история улучшает скоринг по сравнению с моделью, которая видит только текущую заявку.
 
