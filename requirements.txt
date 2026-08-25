@@ -1,3 +1,6 @@
+# Base dependencies for the introductory projects.
+# Larger projects keep their own requirements.txt inside projects/<name>/.
+
 jupyter
 numpy
 openpyxl

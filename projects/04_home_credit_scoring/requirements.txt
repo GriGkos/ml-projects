@@ -1,0 +1,15 @@
+catboost
+ipykernel
+jupyter
+lightgbm
+matplotlib
+nbclient
+numpy
+optuna
+pandas
+pypdf
+reportlab
+scikit-learn
+seaborn
+shap
+torch

@@ -1,84 +1,188 @@
 # ML Projects
 
-Учебное портфолио по машинному обучению: от работы с `NumPy` и `pandas` до полных решений соревнований Kaggle. Каждый проект оформлен как самостоятельное исследование: с постановкой задачи, проверкой качества, выводами и инструкцией по запуску.
+Коллекция проектов по машинному обучению: от базовых ML-пайплайнов до полноценных Kaggle-решений с feature engineering, out-of-fold валидацией, подбором гиперпараметров, интерпретацией моделей и внешней проверкой на leaderboard.
 
-## Проекты
+Основной акцент — не на количестве моделей, а на последовательной проверке гипотез, корректной валидации и понимании того, **за счёт чего меняется качество**.
 
-| № | Проект | Задача и основные идеи | Результат |
-| --- | --- | --- | --- |
-| 00 | [NumPy и pandas](https://github.com/GriGkos/ml-projects/tree/project/00-numpy-pandas/projects/00_numpy_pandas) | Первичная работа с таблицами: загрузка Excel, проверка структуры, фильтрация и группировки. | Освоены базовые операции с `DataFrame` и `ndarray`. |
-| 01 | [ML Bricks](https://github.com/GriGkos/ml-projects/tree/project/01-ml-bricks/projects/01_ml_bricks) | Базовые элементы ML-пайплайна: train/test split, preprocessing, метрики, CV и подбор параметров. | Все задания и автопроверки выполнены. |
-| 02 | [Online Shoppers Purchasing Intention](https://github.com/GriGkos/ml-projects/tree/project/02-ml-basics/projects/02_ml_basics) | Предсказание покупки по поведению пользователя в интернет-магазине. EDA, гипотезы, feature selection и сравнение моделей. | Лучший ROC-AUC на тесте: **0.937** у Gradient Boosting. |
-| 03 | [Elo Merchant Category Recommendation](https://github.com/GriGkos/ml-projects/tree/project/03-kaggle-feature-ensemble/projects/03_kaggle_feature_ensemble) | Регрессия лояльности клиента по истории транзакций. Чтение крупных таблиц чанками, feature engineering, fold-safe target encoding и ансамбли. | Private RMSE: **3.60826**, 82-е место из 4 111, топ **1.99%**. |
-| 04 | [Home Credit Default Risk](https://github.com/GriGkos/ml-projects/tree/project/04-home-credit-scoring/projects/04_home_credit_scoring) | Кредитный скоринг по заявке и истории клиента. Полный pipeline, OOF-валидация, CatBoost, LightGBM, MLP и cross-fitted blend. | Private ROC-AUC: **0.79510**, OOF ROC-AUC: **0.79405**. |
-
-## Что внутри
-
-### 00. NumPy и pandas
-
-Небольшой вводный проект, в котором отработаны типичные действия аналитика: загрузка Excel-таблицы, просмотр структуры данных, удаление служебного поля, группировки и фильтрация записей. Это основа для следующих исследований.
-
-### 01. ML Bricks
-
-Практика ключевых компонентов модели классификации на `load_breast_cancer`: ручной стратифицированный split, импутация без утечки, One-Hot Encoding, расчёт метрик, cross-validation и `GridSearchCV`. Отдельно разобраны baseline через `DummyClassifier` и важность признаков дерева решений.
-
-### 02. Online Shoppers Purchasing Intention
-
-Первое полноценное исследование классификации. Для сессий интернет-магазина проверены пропуски, дубликаты, распределения, взаимосвязи признаков и дисбаланс классов. Гипотезы формулируются после соответствующих наблюдений в EDA и проверяются на одних и тех же CV-фолдах.
-
-Сравниваются Logistic Regression, Random Forest и Gradient Boosting. Все преобразования выполнены внутри `Pipeline`, поэтому scaling, кодирование и отбор признаков не используют информацию из валидационных фолдов.
-
-### 03. Elo Merchant Category Recommendation
-
-Полное решение регрессионного соревнования Kaggle с таблицами транзакций объёмом в десятки миллионов строк. Признаки строятся из historical и new периодов, агрегации рассчитываются чанками до уровня карты. Сравниваются LightGBM, XGBoost, CatBoost, target encoding и два способа ансамблирования.
-
-Финальная модель выбрана не только по среднему OOF RMSE: преимущество сложного ансамбля над XGBoost seed bagging было проверено парным bootstrap. Так как доверительный интервал разницы включил ноль, для submission оставлена более простая и устойчивая модель.
+## Featured projects
 
 ### 04. Home Credit Default Risk
 
-Наиболее крупное исследование в репозитории. Модель предсказывает риск проблем с погашением кредита и последовательно показывает вклад каждого источника информации: текущей заявки, исторических таблиц и модели.
+**Кредитный скоринг по текущей заявке и подробной истории клиента.**
 
-В проекте есть EDA, агрегирование шести исторических таблиц, feature engineering, сравнение baseline, LightGBM, CatBoost и MLP, анализ калибровки, permutation importance, SHAP и ошибок модели. Итоговый CatBoost подтверждён как OOF-валидацией, так и private leaderboard. В ветке также лежат PDF-отчёт, графики и готовые CSV для Kaggle.
+`CatBoost` · `LightGBM` · `PyTorch` · `Optuna` · `SHAP` · `Permutation Importance`
 
-## Подход к работе
+| Результат | Значение |
+| --- | ---: |
+| OOF ROC-AUC | **0.79405** |
+| Kaggle Public | **0.79479** |
+| Kaggle Private | **0.79510** |
 
-Во всех исследовательских проектах я придерживаюсь одних принципов:
+Что интересно в проекте:
 
-- отделяю EDA, построение признаков, обучение и интерпретацию результата;
-- использую `Pipeline` или fold-safe преобразования, чтобы исключить утечку данных;
-- сравниваю модели на одинаковых фолдах кросс-валидации;
-- не выбираю финальную модель только по одной метрике: проверяю разницу между экспериментами, стабильность по фолдам и внешний результат на Kaggle;
-- сохраняю итоговые выводы, воспроизводимые ноутбуки, README и submission рядом с решением.
+- отдельно измерен вклад нелинейной модели и вклад подробной кредитной истории;
+- финальная матрица содержит **2 708 признаков** из текущей заявки и исторических таблиц;
+- сравниваются Logistic Regression, Decision Tree, LightGBM, CatBoost и MLP;
+- ансамбль CatBoost + LightGBM проверен через **второй уровень cross-validation**, а не на тех же OOF, по которым подбирались веса;
+- group permutation importance показывает, какие источники истории реально дают сигнал;
+- отдельно выполнены SHAP-анализ, разбор FP/FN, calibration и fairness-диагностика.
 
-## Как открыть проект
+**Главный результат эксперимента:**
 
-Каждая работа хранится в отдельной ветке. Чтобы посмотреть конкретный проект локально:
+```text
+Logistic Regression             0.75141
+LightGBM — только заявка        0.76724
+LightGBM — заявка + история     0.78538
+CatBoost — заявка + история     0.79405
+Cross-fitted blend              0.79440
+```
+
+История клиента дала LightGBM `+0.01814 ROC-AUC`, а среди исторических источников наиболее полезными оказались `bureau`, `installments` и `previous_application`.
+
+[Открыть проект →](./projects/04_home_credit_scoring/)
+
+---
+
+### 03. Elo Merchant Category Recommendation
+
+**Регрессия лояльности клиента по истории транзакций.**
+
+`XGBoost` · `LightGBM` · `CatBoost` · `Optuna` · `Target Encoding` · `Bootstrap`
+
+| Результат | Значение |
+| --- | ---: |
+| Private RMSE | **3.60826** |
+| Public RMSE | **3.69615** |
+| Private leaderboard | **82 / 4 111** |
+| Место | **Top 1.99%** |
+
+Что интересно в проекте:
+
+- работа с historical transactions объёмом более **29 млн строк**;
+- чтение больших таблиц чанками и агрегация до уровня карты;
+- feature engineering по historical и new periods;
+- fold-safe target encoding;
+- подбор LightGBM, XGBoost и CatBoost через Optuna;
+- seed bagging для XGBoost;
+- weighted blend и ridge stacking;
+- статистическая проверка небольшого преимущества ансамбля через **paired bootstrap**.
+
+Формально лучший OOF показал stacking, но bootstrap не подтвердил устойчивое преимущество над более простым XGBoost seed bagging. Поэтому для Kaggle выбран более простой и стабильный вариант.
+
+[Открыть проект →](./projects/03_elo_merchant/)
+
+---
+
+### 02. Online Shoppers Purchasing Intention
+
+**Предсказание покупки по поведению пользователя в интернет-магазине.**
+
+`scikit-learn` · `Pipeline` · `GridSearchCV` · `Feature Selection` · `Permutation Importance`
+
+| Модель | ROC-AUC | Recall | Precision |
+| --- | ---: | ---: | ---: |
+| Gradient Boosting | **0.937** | 0.605 | **0.717** |
+| Random Forest | 0.934 | 0.788 | 0.590 |
+| Logistic Regression | 0.913 | **0.806** | 0.519 |
+
+В проекте последовательно проверяются гипотезы о влиянии балансировки классов, масштабирования, категориальных признаков, feature selection и удаления отдельных признаков. Все preprocessing-шаги находятся внутри `Pipeline`, а финальный test используется только один раз после выбора моделей.
+
+[Открыть проект →](./projects/02_online_shoppers/)
+
+---
+
+## ML foundations
+
+### 01. ML Bricks
+
+Базовые элементы корректного ML-пайплайна на `load_breast_cancer`:
+
+- стратифицированный train/test split;
+- импутация без утечки;
+- One-Hot Encoding;
+- расчёт метрик;
+- baseline через `DummyClassifier`;
+- cross-validation;
+- `GridSearchCV`;
+- feature importance дерева решений.
+
+[Открыть проект →](./projects/01_ml_bricks/)
+
+### 00. NumPy & pandas
+
+Небольшой вводный проект по работе с табличными данными: загрузка Excel, анализ структуры `DataFrame`, фильтрация, группировки и обработка смешанных типов данных.
+
+[Открыть проект →](./projects/00_numpy_pandas/)
+
+---
+
+## Как я строю эксперименты
+
+Во всех крупных проектах использую примерно одну и ту же логику:
+
+1. **Постановка вопроса.** Сначала формулируется, что именно нужно проверить, а не просто «обучить побольше моделей».
+2. **EDA.** Проверяются распределения, пропуски, аномалии, баланс классов и структура связанных таблиц.
+3. **Простой baseline.** Нужен понятный нижний уровень, относительно которого можно измерять дальнейший прирост.
+4. **Fold-safe preprocessing.** Преобразования, использующие train-статистики или target, выполняются только внутри обучающей части соответствующего фолда.
+5. **Одинаковая CV-схема.** Основные модели сравниваются на одних и тех же разбиениях.
+6. **Анализ прироста.** Проверяется не только итоговая метрика, но и то, какие данные, признаки или решения реально дали улучшение.
+7. **Интерпретация.** Используются feature importance, permutation importance, SHAP, error analysis и дополнительные диагностические метрики.
+8. **Внешняя проверка.** Для Kaggle-проектов локальный OOF сопоставляется с public/private leaderboard.
+
+---
+
+## Стек
+
+**Machine Learning**  
+`scikit-learn` · `LightGBM` · `XGBoost` · `CatBoost` · `Optuna`
+
+**Deep Learning**  
+`PyTorch`
+
+**Data & Analysis**  
+`pandas` · `NumPy` · `SHAP` · `Matplotlib` · `Jupyter`
+
+**Engineering**  
+`Git` · `Docker` · `CUDA`
+
+---
+
+## Структура репозитория
+
+Все проекты собраны в одной ветке и доступны как обычные директории:
+
+```text
+ml-projects/
+├── projects/
+│   ├── 00_numpy_pandas/
+│   ├── 01_ml_bricks/
+│   ├── 02_online_shoppers/
+│   ├── 03_elo_merchant/
+│   └── 04_home_credit_scoring/
+├── README.md
+├── requirements.txt
+└── .gitignore
+```
+
+У каждого проекта есть собственный README с постановкой задачи, результатами, структурой файлов и инструкцией по воспроизведению.
+
+Чтобы открыть репозиторий локально:
 
 ```bash
 git clone https://github.com/GriGkos/ml-projects.git
 cd ml-projects
-git switch project/04-home-credit-scoring
 ```
 
-Затем откройте README в папке `projects/<название-проекта>/`: в нём перечислены данные, зависимости, структура файлов и инструкция по воспроизведению. Исходные данные Kaggle намеренно не добавляются в Git, но для каждого проекта указано, куда их положить.
+После этого можно перейти в нужную директорию `projects/<project_name>/`.
 
-## Стек
+Исходные Kaggle-данные, кэши и обученные модели в Git не добавляются.
 
-`Python` · `pandas` · `NumPy` · `scikit-learn` · `LightGBM` · `XGBoost` · `CatBoost` · `Optuna` · `PyTorch` · `SHAP` · `Jupyter`
+---
 
-## Структура репозитория
+## Коротко
 
-```text
-ml-projects/
-|-- README.md                         # эта страница
-|-- projects/
-|   |-- 00_numpy_pandas/              # ветка project/00-numpy-pandas
-|   |-- 01_ml_bricks/                 # ветка project/01-ml-bricks
-|   |-- 02_ml_basics/                 # ветка project/02-ml-basics
-|   |-- 03_kaggle_feature_ensemble/   # ветка project/03-kaggle-feature-ensemble
-|   `-- 04_home_credit_scoring/       # ветка project/04-home-credit-scoring
-|-- requirements.txt
-`-- .gitignore
-```
+Если хочется посмотреть только самые сильные работы, я бы начал с:
 
-Папки проектов показаны здесь как карта репозитория: фактическое содержимое каждой из них находится в соответствующей ветке.
+1. **Home Credit Default Risk** — кредитный скоринг, большая историческая матрица, CatBoost, SHAP, permutation importance и fairness;
+2. **Elo Merchant Category Recommendation** — большие транзакционные таблицы, feature engineering, boosting и top 1.99% на Kaggle;
+3. **Online Shoppers Purchasing Intention** — компактный и хорошо читаемый пример полного классификационного pipeline.
