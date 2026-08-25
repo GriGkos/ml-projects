@@ -39,7 +39,7 @@ Cross-fitted blend              0.79440
 
 История клиента дала LightGBM `+0.01814 ROC-AUC`, а среди исторических источников наиболее полезными оказались `bureau`, `installments` и `previous_application`.
 
-[Открыть проект →](https://github.com/GriGkos/ml-projects/tree/project/04-home-credit-scoring/projects/04_home_credit_scoring)
+[Открыть проект →](./projects/04_home_credit_scoring/)
 
 ---
 
@@ -69,7 +69,7 @@ Cross-fitted blend              0.79440
 
 Формально лучший OOF показал stacking, но bootstrap не подтвердил устойчивое преимущество над более простым XGBoost seed bagging. Поэтому для Kaggle выбран более простой и стабильный вариант.
 
-[Открыть проект →](https://github.com/GriGkos/ml-projects/tree/project/03-kaggle-feature-ensemble/projects/03_kaggle_feature_ensemble)
+[Открыть проект →](./projects/03_kaggle_feature_ensemble/)
 
 ---
 
@@ -87,7 +87,7 @@ Cross-fitted blend              0.79440
 
 В проекте последовательно проверяются гипотезы о влиянии балансировки классов, масштабирования, категориальных признаков, feature selection и удаления отдельных признаков. Все preprocessing-шаги находятся внутри `Pipeline`, а финальный test используется только один раз после выбора моделей.
 
-[Открыть проект →](https://github.com/GriGkos/ml-projects/tree/project/02-ml-basics/projects/02_ml_basics)
+[Открыть проект →](./projects/02_ml_basics/)
 
 ---
 
@@ -106,13 +106,13 @@ Cross-fitted blend              0.79440
 - `GridSearchCV`;
 - feature importance дерева решений.
 
-[Открыть проект →](https://github.com/GriGkos/ml-projects/tree/project/01-ml-bricks/projects/01_ml_bricks)
+[Открыть проект →](./projects/01_ml_bricks/)
 
 ### 00. NumPy & pandas
 
 Небольшой вводный проект по работе с табличными данными: загрузка Excel, анализ структуры `DataFrame`, фильтрация, группировки и обработка смешанных типов данных.
 
-[Открыть проект →](https://github.com/GriGkos/ml-projects/tree/project/00-numpy-pandas/projects/00_numpy_pandas)
+[Открыть проект →](./projects/00_numpy_pandas/)
 
 ---
 
@@ -147,27 +147,33 @@ Cross-fitted blend              0.79440
 
 ---
 
-## Навигация по репозиторию
+## Структура репозитория
 
-Сейчас каждый проект хранится в отдельной ветке:
+Все проекты собраны в одной ветке и доступны как обычные директории:
 
-| Проект | Ветка |
-| --- | --- |
-| NumPy & pandas | `project/00-numpy-pandas` |
-| ML Bricks | `project/01-ml-bricks` |
-| Online Shoppers | `project/02-ml-basics` |
-| Elo Merchant | `project/03-kaggle-feature-ensemble` |
-| Home Credit | `project/04-home-credit-scoring` |
+```text
+ml-projects/
+├── projects/
+│   ├── 00_numpy_pandas/
+│   ├── 01_ml_bricks/
+│   ├── 02_ml_basics/
+│   ├── 03_kaggle_feature_ensemble/
+│   └── 04_home_credit_scoring/
+├── README.md
+├── requirements.txt
+└── .gitignore
+```
 
-Чтобы открыть проект локально:
+У каждого проекта есть собственный README с постановкой задачи, результатами, структурой файлов и инструкцией по воспроизведению.
+
+Чтобы открыть репозиторий локально:
 
 ```bash
 git clone https://github.com/GriGkos/ml-projects.git
 cd ml-projects
-git switch project/04-home-credit-scoring
 ```
 
-В каждой ветке проект находится в `projects/<project_name>/` и содержит собственный README с постановкой задачи, результатами, структурой файлов и инструкцией по воспроизведению.
+После этого можно перейти в нужную директорию `projects/<project_name>/`.
 
 Исходные Kaggle-данные, кэши и обученные модели в Git не добавляются.
 
