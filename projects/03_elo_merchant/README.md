@@ -1,22 +1,22 @@
-# Проект: Elo Merchant Category Recommendation
+# Elo Merchant Category Recommendation
 
-Решение для соревнования Kaggle [Elo Merchant Category Recommendation](https://www.kaggle.com/competitions/elo-merchant-category-recommendation). Цель - предсказать анонимизированный показатель лояльности клиента `target` по данным карты, истории покупок и характеристикам продавцов.
+Решение для соревнования Kaggle [Elo Merchant Category Recommendation](https://www.kaggle.com/competitions/elo-merchant-category-recommendation). Цель — предсказать анонимизированный показатель лояльности клиента `target` по данным карты, истории покупок и характеристикам продавцов.
 
 Проект построен как исследование полного ML-пайплайна: от EDA исходных таблиц до отбора признаков, настройки нескольких моделей, ансамблирования и создания итогового submission.
 
 ## Результат
 
-Финальный submission построен на усреднении XGBoost с тремя random seed. На private leaderboard получен RMSE **3.60826**, на public leaderboard - **3.69615**.
+Финальный submission построен на усреднении XGBoost с тремя random seed. На private leaderboard получен RMSE **3.60826**, на public leaderboard — **3.69615**.
 
-В private leaderboard это **82-е место из 4 111**, то есть топ **1.99%** участников. Скриншот результата находится в [reports/kaggle_submission.png](reports/kaggle_submission.png), итоговый файл - [submissions/submission_xgboost_seed_bagging.csv](submissions/submission_xgboost_seed_bagging.csv).
+В private leaderboard это **82-е место из 4 111**, то есть топ **1.99%** участников. Скриншот результата находится в [reports/kaggle_submission.png](reports/kaggle_submission.png), итоговый файл — [submissions/submission_xgboost_seed_bagging.csv](submissions/submission_xgboost_seed_bagging.csv).
 
 ## Данные и постановка задачи
 
-Основная таблица `train.csv` содержит 201 917 карт и целевую переменную `target`; в `test.csv` - 123 623 карт без target. Для каждой карты известны:
+Основная таблица `train.csv` содержит 201 917 карт и целевую переменную `target`; в `test.csv` — 123 623 карты без target. Для каждой карты известны:
 
-- `card_id` - идентификатор карты;
-- `first_active_month` - месяц активации;
-- `feature_1`, `feature_2`, `feature_3` - анонимизированные категориальные признаки.
+- `card_id` — идентификатор карты;
+- `first_active_month` — месяц активации;
+- `feature_1`, `feature_2`, `feature_3` — анонимизированные категориальные признаки.
 
 Сигнал для прогноза находится прежде всего в связанных таблицах:
 
@@ -26,7 +26,7 @@
 | `new_merchant_transactions.csv` | 1 963 031 | Покупки в новом периоде |
 | `merchants.csv` | 334 696 | Характеристики продавцов |
 
-Метрика соревнования - RMSE. Чем меньше ошибка, тем лучше результат. Распределение target имеет тяжёлый левый хвост: 2 207 карт, или около 1.09% train, имеют `target < -30`. Поэтому качество оценивается по одинаковым пяти stratified folds, где стратификация построена по индикатору этого экстремального сегмента.
+Метрика соревнования — RMSE. Чем меньше ошибка, тем лучше результат. Распределение target имеет тяжёлый левый хвост: 2 207 карт, или около 1.09% train, имеют `target < -30`. Поэтому качество оценивается по одинаковым пяти stratified folds, где стратификация построена по индикатору этого экстремального сегмента.
 
 ## Ход исследования
 
@@ -77,12 +77,12 @@
 
 Формально лучший OOF-результат показал Ridge stacking. Однако преимущество над XGBoost seed bagging очень мало: парный бутстрэп на 2 000 выборок дал 95%-интервал разницы `[-0.00110; 0.00070]`, включающий ноль. Поэтому для финального submission выбран более простой и устойчивый XGBoost seed bagging.
 
-Проверялась и отдельная модель экстремального сегмента `target < -30`. Она не смогла ранжировать такие карты: OOF PR-AUC составил `0.0109`, ROC-AUC - `0.4997`. Вероятности почти совпали, квантильные пороги выбрали слишком много карт, а корректировка резко ухудшила общий RMSE. Эксперимент сохранён в ноутбуке как отрицательный результат и не входит в итоговую модель.
+Проверялась и отдельная модель экстремального сегмента `target < -30`. Она не смогла ранжировать такие карты: OOF PR-AUC составил `0.0109`, ROC-AUC — `0.4997`. Вероятности почти совпали, квантильные пороги выбрали слишком много карт, а корректировка резко ухудшила общий RMSE. Эксперимент сохранён в ноутбуке как отрицательный результат и не входит в итоговую модель.
 
 ## Структура проекта
 
 ```text
-03_kaggle_feature_ensemble/
+03_elo_merchant/
 |-- notebooks/
 |   `-- solution.ipynb
 |-- reports/
@@ -97,28 +97,27 @@
 
 ## Воспроизведение
 
-1. Клонировать репозиторий и перейти на ветку проекта:
+1. Клонировать репозиторий:
 
    ```bash
    git clone https://github.com/GriGkos/ml-projects.git
    cd ml-projects
-   git switch project/03-kaggle-feature-ensemble
    ```
 
-2. Установить зависимости:
+2. Установить зависимости проекта:
 
    ```bash
-   pip install -r projects/03_kaggle_feature_ensemble/requirements.txt
+   pip install -r projects/03_elo_merchant/requirements.txt
    ```
 
 3. Скачать данные соревнования Kaggle и разместить все CSV-файлы в папке:
 
    ```text
-   projects/03_kaggle_feature_ensemble/data/raw/
+   projects/03_elo_merchant/data/raw/
    ```
 
    Нужны `train.csv`, `test.csv`, `historical_transactions.csv`, `new_merchant_transactions.csv`, `merchants.csv` и `sample_submission.csv`.
 
-4. Открыть терминал в `projects/03_kaggle_feature_ensemble/`, запустить Jupyter и выполнить [notebooks/solution.ipynb](notebooks/solution.ipynb) сверху вниз.
+4. Перейти в `projects/03_elo_merchant/`, запустить Jupyter и выполнить [notebooks/solution.ipynb](notebooks/solution.ipynb) сверху вниз.
 
 Полный расчёт рассчитан на GPU: используются CUDA-версии LightGBM, XGBoost и CatBoost. На CPU тяжёлые эксперименты, особенно Optuna и чтение транзакций, будут выполняться существенно дольше. После прогона ноутбук создаёт итоговый файл в `submissions/`.
