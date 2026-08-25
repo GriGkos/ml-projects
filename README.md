@@ -69,7 +69,7 @@ Cross-fitted blend              0.79440
 
 Формально лучший OOF показал stacking, но bootstrap не подтвердил устойчивое преимущество над более простым XGBoost seed bagging. Поэтому для Kaggle выбран более простой и стабильный вариант.
 
-[Открыть проект →](./projects/03_kaggle_feature_ensemble/)
+[Открыть проект →](./projects/03_elo_merchant/)
 
 ---
 
@@ -87,7 +87,7 @@ Cross-fitted blend              0.79440
 
 В проекте последовательно проверяются гипотезы о влиянии балансировки классов, масштабирования, категориальных признаков, feature selection и удаления отдельных признаков. Все preprocessing-шаги находятся внутри `Pipeline`, а финальный test используется только один раз после выбора моделей.
 
-[Открыть проект →](./projects/02_ml_basics/)
+[Открыть проект →](./projects/02_online_shoppers/)
 
 ---
 
@@ -156,8 +156,8 @@ ml-projects/
 ├── projects/
 │   ├── 00_numpy_pandas/
 │   ├── 01_ml_bricks/
-│   ├── 02_ml_basics/
-│   ├── 03_kaggle_feature_ensemble/
+│   ├── 02_online_shoppers/
+│   ├── 03_elo_merchant/
 │   └── 04_home_credit_scoring/
 ├── README.md
 ├── requirements.txt
