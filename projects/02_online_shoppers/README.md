@@ -1,4 +1,4 @@
-# Проект №1: Online Shoppers Purchasing Intention
+# Online Shoppers Purchasing Intention
 
 В этой работе я исследовал данные о сессиях интернет-магазина и проверил, можно ли по поведению пользователя предсказать, закончится ли сессия покупкой.
 
@@ -97,5 +97,5 @@ Gradient Boosting показал самый высокий ROC-AUC, Average Prec
 ├── data/
 │   └── online_shoppers_intention.csv
 └── docs/
-    └── homework1.pdf
+    └── project_report.pdf
 ```
